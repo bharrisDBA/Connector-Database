@@ -1,18 +1,17 @@
 USE [_connector]
 GO
-/****** Object:  View [dbo].[get_response_template]    Script Date: 8/16/2017 8:45:17 PM ******/
+/****** Object:  View [dbo].[get_inquirers_by_team_summary]    Script Date: 8/16/2017 8:45:17 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE VIEW [dbo].[get_response_template]
+CREATE VIEW [dbo].[get_inquirers_by_team_summary]
 AS
-SELECT        dbo.Filter.FilterName, dbo.ResponseTemplate.TemplateID, dbo.ResponseTemplate.TemplateName, dbo.ResponseTemplate.Subject, dbo.ResponseTemplate.[Content], dbo.ResponseTemplate.DecisionType, 
-                         dbo.ResponseTemplate.LanguageID, dbo.ResponseTemplate.FilterID, dbo.ResponseTemplate.Weight, dbo.ResponseTemplate.IsDefault, dbo.l_codes.l_lang AS LanguageName, 
-                         dbo.ResponseTemplate.CreateDate
-FROM            dbo.ResponseTemplate INNER JOIN
-                         dbo.Filter ON dbo.ResponseTemplate.FilterID = dbo.Filter.FilterID INNER JOIN
-                         dbo.l_codes ON dbo.ResponseTemplate.LanguageID = dbo.l_codes.l_id
+SELECT        dbo.Users.UserName, dbo.Users.UserTypeID, dbo.Users.FirstName, dbo.Users.LastName, dbo.Users.DateCreated, dbo.Users.NickName, dbo.Users.UserID, dbo.InquirerExtension.ConnectorID, 
+                         dbo.TeamAssignment.TeamID
+FROM            dbo.Users INNER JOIN
+                         dbo.InquirerExtension ON dbo.Users.UserID = dbo.InquirerExtension.UserID INNER JOIN
+                         dbo.TeamAssignment ON dbo.InquirerExtension.ConnectorID = dbo.TeamAssignment.UserID
 
 GO
 EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPane1', @value=N'[0E232FF0-B466-11cf-A24F-00AA00A3EFFF, 1.00]
@@ -86,32 +85,32 @@ Begin DesignProperties =
          Left = 0
       End
       Begin Tables = 
-         Begin Table = "ResponseTemplate"
+         Begin Table = "Users"
             Begin Extent = 
                Top = 6
                Left = 38
                Bottom = 136
-               Right = 209
+               Right = 227
             End
             DisplayFlags = 280
-            TopColumn = 6
+            TopColumn = 19
          End
-         Begin Table = "Filter"
+         Begin Table = "TeamAssignment"
             Begin Extent = 
-               Top = 83
-               Left = 405
-               Bottom = 213
-               Right = 580
+               Top = 1
+               Left = 308
+               Bottom = 97
+               Right = 478
             End
             DisplayFlags = 280
             TopColumn = 0
          End
-         Begin Table = "l_codes"
+         Begin Table = "InquirerExtension"
             Begin Extent = 
-               Top = 1
-               Left = 728
-               Bottom = 131
-               Right = 898
+               Top = 68
+               Left = 547
+               Bottom = 198
+               Right = 717
             End
             DisplayFlags = 280
             TopColumn = 0
@@ -142,7 +141,7 @@ Begin DesignProperties =
       End
    End
 End
-' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'get_response_template'
+' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'get_inquirers_by_team_summary'
 GO
-EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPaneCount', @value=1 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'get_response_template'
+EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPaneCount', @value=1 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'get_inquirers_by_team_summary'
 GO
