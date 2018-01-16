@@ -3,6 +3,11 @@ GO
 /****** Object:  StoredProcedure [dbo].[REP_GetConnectorsUnderUser]    Script Date: 8/16/2017 8:45:18 PM ******/
 SET ANSI_NULLS ON
 GO
+IF OBJECT_ID('[dbo].[REP_GetConnectorsUnderUser]') IS NOT NULL
+BEGIN
+	DROP PROCEDURE [dbo].[REP_GetConnectorsUnderUser]
+END
+GO
 SET QUOTED_IDENTIFIER ON
 GO
 -- =============================================
@@ -23,10 +28,12 @@ BEGIN
 declare @UserType int
 select @UserType = usertypeid from users where userid = @UserID;
 
-select  distinct u3.userid,(u3.firstname + ' ' + u3.lastname) as [ConnectorName]
-,case when us.laston is null then 'Never' else convert(varchar(25), us.laston, 120)   end as [Last Log On]
+select  distinct
+convert(varchar(25), isNull( us.laston,Cast('01/01/1970' as datetime)), 120) as [Last Log On]
+,(u3.firstname + ' ' + u3.lastname) as [ConnectorName]
 ,case when ie.inquirers is null then 0 else ie.inquirers end as [Total Inquirers]
 ,case when ie2.inquirers is null then 0 else ie2.inquirers end as [Inquirers in Specified Days]
+,u3.userid
 ,dbo.userteams(u3.userid) as [Team Membership]
 from TeamAssignment ta
 join users u3 on u3.userid = ta.userid

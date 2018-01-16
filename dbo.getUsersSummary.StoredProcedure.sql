@@ -12,15 +12,7 @@ CREATE PROCEDURE [dbo].[getUsersSummary]
 	@Status int = NULL
 )
 AS 
-SELECT 	
-	UserID,
-	UserName,
-	UserTypeID,
-	FirstName,
-	LastName,
-	NickName,
-	Email,
-	DateCreated
+SELECT *
 FROM Users
 WHERE UserTypeID = ISNULL(@UserType,UserTypeID) AND Status = ISNULL(@Status,Status) AND UserTYPEID <> @ExcludeType
 order by lastname,firstname
