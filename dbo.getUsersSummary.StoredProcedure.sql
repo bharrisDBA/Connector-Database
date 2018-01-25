@@ -1,5 +1,10 @@
 USE [_connector]
 GO
+IF OBJECT_ID('[dbo].[getUsersSummary]') IS NOT NULL
+BEGIN
+	DROP PROCEDURE [dbo].[getUsersSummary]
+END
+GO
 /****** Object:  StoredProcedure [dbo].[getUsersSummary]    Script Date: 8/16/2017 8:45:18 PM ******/
 SET ANSI_NULLS OFF
 GO
@@ -12,15 +17,7 @@ CREATE PROCEDURE [dbo].[getUsersSummary]
 	@Status int = NULL
 )
 AS 
-SELECT 	
-	UserID,
-	UserName,
-	UserTypeID,
-	FirstName,
-	LastName,
-	NickName,
-	Email,
-	DateCreated
+SELECT *
 FROM Users
 WHERE UserTypeID = ISNULL(@UserType,UserTypeID) AND Status = ISNULL(@Status,Status) AND UserTYPEID <> @ExcludeType
 order by lastname,firstname
